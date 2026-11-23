@@ -1,74 +1,52 @@
-# Steel Industry Energy Consumption Prediction — Machine Learning Pipeline
+# Credit Card Risk Classification & Approval Analysis
 
-## Project Overview
-This repository contains an end-to-end machine learning pipeline for predicting and analyzing industrial electrical load and energy consumption in the steel manufacturing sector. Using high-frequency sensor and operational data across 35,040 records, the project models energy usage patterns to optimize factory power management and operational efficiency.
+## 📌 Project Overview
+This project performs exploratory data analysis (EDA) and risk classification on a credit card application dataset. By analyzing applicant demographics, financial history, and employment sectors, the workflow uncovers key behavioral patterns and predictive indicators driving credit card approval decisions. I completed this project in collaboration with United Network Of Professionals (UNP) on Steel Industry Energy Consumption Using Python.This is a group project completed as part of our internship. The material link the project is : https://drive.google.com/drive/folders/1brdjyNryFg0CKwkJbAFLfRdLPM7goFQx?usp=sharing
 
-## Problem Statement
-Steel manufacturing is an energy-intensive industrial process characterized by heavy machinery, continuous operations, and fluctuating electrical loads. Unoptimized power consumption leads to high utility costs and demand charges. The business problem is to build an accurate predictive regression model capable of forecasting energy usage (`Usage_kWh`) based on electrical characteristics, reactive power metrics, and temporal patterns.
+## 📁 Dataset Description
+The dataset (`clean_dataset.xlsx`) contains applicant profiles and credit history records. Key attributes include:
+* **Demographics & Background:** `Gender`, `Age`, `Married`, `Citizen`, `Ethnicity`, `ZipCode`
+* **Employment & Financials:** `Industry`, `Employed`, `Income`, `BankCustomer`, `YearsEmployed`, `PriorDefault`, `CreditScore`, `Debt`
+* **Application Details:** `DriversLicense`
+* **Target Variable:** `Approved` (`0` = Rejected, `1` = Approved)
 
-## Objectives
-* Load and clean high-frequency industrial datasets comprising 35,040 observations captured at 15-minute intervals.
-* Perform feature engineering to extract cyclic temporal features (such as seconds from midnight) and operational indicators.
-* Drop data leakage variables (e.g., `CO2(tCO2)`) to ensure robust out-of-sample generalization.
-* Train and evaluate machine learning regression models (Random Forest) to accurately predict electrical load.
-* Evaluate predictive performance using standard regression metrics ($R^2$, RMSE, and MAE).
+## 🛠️ Technologies & Libraries Used
+* **Python 3.x**
+* **Data Manipulation:** `numpy`, `pandas`
+* **Data Visualization:** `matplotlib`, `seaborn`
 
-## Technologies Used
-* **Language:** Python 3
-* **Environment:** Jupyter Notebook / Google Colab
-* **Libraries:**
-  * `pandas` & `numpy` — Data loading, cleaning, manipulation, and numerical computations
-  * `matplotlib` & `seaborn` — Statistical visualizations, feature distribution plots, and actual vs. predicted trend lines
-  * `scikit-learn` — Model training (Random Forest Regressor), cross-validation, and performance evaluation metrics
+## 📊 Workflow & Methodology
 
-## Methodology
+### 1. Import Libraries & Data Exploration
+* Loaded the dataset (`clean_dataset.xlsx`) using `pandas` and previewed initial records.
+* Inspected dataset dimensions (`690` rows, `16` columns), column names, data types, and non-null counts.
+* Verified data integrity by checking for missing values (`0` missing entries) and duplicate rows (`0` duplicates).
 
-### 1. Data Loading & Inspection
-* Loaded the raw industrial dataset containing **35,040 records** capturing factory operations at 15-minute intervals.
-* Inspected feature data types, checked for missing values, and verified data integrity across electrical and operational columns.
-
-### 2. Feature Engineering & Data Cleaning
-* **Temporal Extraction:** Derived cyclic time features from timestamps, specifically calculating the number of seconds from midnight to capture daily operational cycles and shift patterns.
-* **Leakage Removal:** Excluded post-hoc or target-derived columns (such as `CO2(tCO2)`) to prevent data leakage during model training.
-* **Data Cleansing:** Handled outliers and normalized feature distributions where necessary.
+### 2. Pre-Processing (Before EDA)
+* **Feature Dropping:** Removed non-predictive identifier columns (`ZipCode`) to reduce noise.
+* **Cardinality Reduction:** Evaluated high-cardinality categorical columns (`Industry`, `Citizen`, `Ethnicity`). Consolidated 14 granular `Industry` categories into 6 broader macroeconomic sectors (`Finance & Business`, `Industrial & Manufacturing`, `Consumer & Retail`, `Public & Healthcare`, `Tech & Media`, and `Other`) mapped to `Industry_Group`.
+* **Target Balance Inspection:** Analyzed the distribution of the target variable `Approved` to check for class imbalance (`55.5%` Rejected vs. `44.5%` Approved).
 
 ### 3. Exploratory Data Analysis (EDA)
-* Analyzed power consumption distribution (`Usage_kWh`) across different hours of the day and days of the week.
-* Examined correlations between energy consumption, lagging/leading reactive power, and power factors.
+* **Univariate Analysis:**
+  * Plotted histograms (`bins=20`) across all continuous numerical features (`Age`, `Debt`, `YearsEmployed`, `CreditScore`, `Income`) to examine distributions and skewness.
+  * Generated countplots and pie charts to visualize the overall approval vs. rejection ratio.
+* **Bivariate & Multivariate Analysis:**
+  * Created pairplots, KDE-overlaid histograms, and pairwise scatterplots segmented by `Approved` status to observe feature separation across financial metrics.
+  * Visualized categorical features (`Gender`, `Married`, `BankCustomer`, `Industry_Group`, `PriorDefault`, `Employed`, `DriversLicense`, `Citizen`, `Ethnicity`) against `Approved` using grouped countplots.
+* **Correlation Analysis:**
+  * Computed the numeric correlation matrix and visualized relationships using an annotated `coolwarm` heatmap to identify multicollinearity and strong linear predictors.
 
-### 4. Model Training
-* Implemented **Random Forest Regression** to model non-linear relationships between electrical parameters and energy usage.
-* Split data into training and testing sets to validate model robustness against unseen operational cycles.
+## 🚀 Key Insights
+* **Prior Default Impact:** `PriorDefault` serves as one of the strongest differentiators in approval outcomes, heavily separating approved applicants from rejected ones.
+* **Financial Indicators:** Applicants with higher `YearsEmployed`, `CreditScore`, and `Income` demonstrate noticeably higher approval concentrations, alongside strong positive correlations between `YearsEmployed` and `Age`.
+* **Sector Distribution:** Consolidating `Industry` into `Industry_Group` revealed that `Industrial & Manufacturing` and `Public & Healthcare` represent the largest applicant segments while maintaining consistent approval proportions.
 
-## Model Evaluation & Performance
-The Random Forest model achieved exceptional predictive performance on the test dataset:
-* **$R^2$ Score:** `0.9995` (explaining 99.95% of the variance in energy consumption)
-* **Root Mean Squared Error (RMSE):** `0.72 kWh`
-* **Mean Absolute Error (MAE):** `0.28 kWh`
-
-## Key Insights
-* **Peak Production Patterns:** The model effectively captures high-load operational cycles and factory shift transitions, providing actionable insights into industrial electrical demand.
-* **Reactive Power Importance:** Lagging and leading reactive power metrics serve as strong predictors for electrical load fluctuations.
-
-## Project Structure
-```text
-├── data/
-│   └── steel_industry_data.csv   # Raw operational dataset (35,040 records)
-├── notebooks/
-│   └── energy_prediction.ipynb   # Jupyter notebook containing EDA, feature engineering, and modeling
-└── README.md                     # Project documentation
-
-
-How to Run
-  1. Clone the Repository
-  Bash
-  git clone [https://github.com/](https://github.com/)<your-username>/<your-repo-name>.git
-  cd <your-repo-name>
-  2. Install Dependencies
-  Bash
-  pip install pandas numpy matplotlib seaborn scikit-learn jupyter openpyxl
-  3. Run the Notebook
-  Place your dataset inside the data/ directory (or update the file path in the notebook).
-  Launch Jupyter Notebook:
-  Bash
-  jupyter notebook
+## 💻 How to Run
+1. Clone the repository or download `Credit_Card_Risk_Classification.ipynb`.
+2. Ensure `clean_dataset.xlsx` is located in your working directory (or update the file path in the `pd.read_excel()` cell).
+3. Install the required dependencies:
+   ```bash
+   pip install numpy pandas matplotlib seaborn openpyxl
+   ```
+4. Launch Jupyter Notebook or Google Colab and run all cells sequentially.
