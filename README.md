@@ -1,8 +1,9 @@
 # Credit Card Risk Classification & Approval Analysis
 
 ## 📌 Project Overview
-This project performs exploratory data analysis (EDA) and risk classification on a credit card application dataset. By analyzing applicant demographics, financial history, and employment sectors, the workflow uncovers key behavioral patterns and predictive indicators driving credit card approval decisions. I completed this project in collaboration with United Network Of Professionals (UNP) on Steel Industry Energy Consumption Using Python.This is a group project completed as part of our internship. The material link the project is : https://drive.google.com/drive/folders/1brdjyNryFg0CKwkJbAFLfRdLPM7goFQx?usp=sharing
-
+This project performs exploratory data analysis (EDA) and risk classification on a credit card application dataset. By analyzing applicant demographics, financial history, and employment sectors, the workflow uncovers key behavioral patterns and predictive indicators driving credit card approval decisions. I completed this project in collaboration with United Network Of Professionals (UNP) on Steel Industry Energy Consumption Using Python.This is a group project completed as part of our internship. The material link the project is :
+GOOGLE COLAB FILE LINK: https://drive.google.com/file/d/1fw1JK3kanptnis9bokN46ca2eJ8U3b72/view?usp=sharing
+PROJECT PRESENTATION FILE LINK: https://docs.google.com/presentation/d/1ERqWL-gEkYYHLqnU_1R_VpgBn9Dyf50O/edit?usp=sharing&ouid=109298726136836996811&rtpof=true&sd=true
 ## 📁 Dataset Description
 The dataset (`clean_dataset.xlsx`) contains applicant profiles and credit history records. Key attributes include:
 * **Demographics & Background:** `Gender`, `Age`, `Married`, `Citizen`, `Ethnicity`, `ZipCode`
